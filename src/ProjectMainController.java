@@ -24,8 +24,18 @@ public class ProjectMainController extends JFrame {
     private int userId;
     private List<ProjectResponse> projects = new ArrayList<>();
 
+    private final String[] tableColumnNames = {"프로젝트 이름", "Contributors"};
+    private String[][] tableContents = new String[][]{};
+    private DefaultTableModel model = new DefaultTableModel(tableContents, tableColumnNames){
+        @Override
+        public boolean isCellEditable(int row, int column) {
+            return false;
+        }
+    };
+
     public ProjectMainController(int userId) {
         setContentPane(ProjectMainPanel);
+
         initSettings();
         this.userId = userId;
 
@@ -54,26 +64,24 @@ public class ProjectMainController extends JFrame {
 
     private void initializeComponents() {
         configureTitleLabel();
-        String[] columnNames = {"프로젝트 이름", "Contributors"};
-        String[][] contents = new String[projects.size()+1][2];
-        int index = 0;
-        System.out.println("여기" + projects);
-        for (ProjectResponse project : projects) {
-            contents[index] = project.getProjectContent();
-            index++;
-        }
-        DefaultTableModel model = new DefaultTableModel(contents, columnNames){
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
-            }
-        };
+        setDataProjectTable();
         projectTable.setModel(model);
         projectTable.getSelectionModel().addListSelectionListener(tableListSelectionListioner);
 
         moveToSelectedProjectButton.addActionListener(moveToSelectedProjectButtonListener);
 
         logoutButton.addActionListener(logoutButtonListener);
+        fetchProjectsButton.addActionListener(fetchProjectsButtonListener);
+    }
+
+    private void setDataProjectTable() {
+        tableContents = new String[projects.size()+1][2];
+        int index = 0;
+        for (ProjectResponse project : projects) {
+            tableContents[index] = project.getProjectContent();
+            index++;
+        }
+        model.setDataVector(tableContents, tableColumnNames);
     }
 
     private void configureTitleLabel() {
@@ -91,6 +99,15 @@ public class ProjectMainController extends JFrame {
         public void actionPerformed(ActionEvent e) {
             new LoginController();
             dispose();
+        }
+    };
+
+    ActionListener fetchProjectsButtonListener = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            projectTable.clearSelection();
+            fetchData();
+            setDataProjectTable();
         }
     };
 
@@ -112,7 +129,8 @@ public class ProjectMainController extends JFrame {
     ListSelectionListener tableListSelectionListioner = new ListSelectionListener() {
         @Override
         public void valueChanged(ListSelectionEvent e) {
-            if (e.getValueIsAdjusting()) return;
+            if (e.getValueIsAdjusting())
+                return;
 
             updateSelectedProjectLabels();
         }
@@ -134,7 +152,9 @@ public class ProjectMainController extends JFrame {
             contributorList.setModel(listModel);
 
         } else {
-            projectTitleLabel.setText("");
+            projectTitleLabel.setText("-");
+            adminNameLable.setText("-");
+            contributorList.setModel(new DefaultListModel());
         }
     }
 
