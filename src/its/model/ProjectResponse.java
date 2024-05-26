@@ -31,4 +31,9 @@ public class ProjectResponse {
     public List<String> getContributorNames() {
         return contributorNames;
     }
+
+    public String[] getProjectContent() {
+        return new String[]{title, String.join(", ", contributorNames)};
+    }
+
 }

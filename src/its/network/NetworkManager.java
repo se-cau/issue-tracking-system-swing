@@ -162,15 +162,15 @@ public class NetworkManager {
 
 
              //Project Get 테스트 코드
-//            int userId = 2; // 예시 userId
-//            List<ProjectResponse> projects = getProjectsByUserId(userId);
-//            for (ProjectResponse project : projects) {
-//                System.out.println("Project ID: " + project.getProjectId());
-//                System.out.println("Title: " + project.getTitle());
-//                System.out.println("Admin Name: " + project.getAdminName());
-//                System.out.println("Contributors: " + String.join(", ", project.getContributorNames()));
-//                System.out.println();
-//            }
+            int userId = 2; // 예시 userId
+            List<ProjectResponse> projects = getProjectsByUserId(userId);
+            for (ProjectResponse project : projects) {
+                System.out.println("Project ID: " + project.getProjectId());
+                System.out.println("Title: " + project.getTitle());
+                System.out.println("Admin Name: " + project.getAdminName());
+                System.out.println("Contributors: " + String.join(", ", project.getContributorNames()));
+                System.out.println();
+            }
 
             //User Controller : Register & Login
 //            resister(new RegisterRequest("Minsop test - 102", "1234", "Dev"));
