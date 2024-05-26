@@ -72,6 +72,8 @@ public class ProjectMainController extends JFrame {
         projectTable.getSelectionModel().addListSelectionListener(tableListSelectionListioner);
 
         moveToSelectedProjectButton.addActionListener(moveToSelectedProjectButtonListener);
+
+        logoutButton.addActionListener(logoutButtonListener);
     }
 
     private void configureTitleLabel() {
@@ -81,6 +83,14 @@ public class ProjectMainController extends JFrame {
     ActionListener creatNewProjectButtonListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
+        }
+    };
+
+    ActionListener logoutButtonListener = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            new LoginController();
+            dispose();
         }
     };
 
