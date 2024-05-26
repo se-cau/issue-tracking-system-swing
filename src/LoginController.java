@@ -1,4 +1,5 @@
 import its.model.LoginRequest;
+import its.model.LoginResponse;
 import its.network.NetworkManager;
 
 import javax.swing.*;
@@ -46,10 +47,10 @@ public class LoginController extends JFrame {
             }
 
             try {
-                NetworkManager.login(new LoginRequest(id, password));
+                LoginResponse loginResponse = NetworkManager.login(new LoginRequest(id, password));
                 System.out.println("로그인 성공");
-                //ToDo 로그인 성공 이후 화면 연결
-
+                new ProjectMainController(loginResponse);
+                dispose();
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(null, ex.getMessage());
             }

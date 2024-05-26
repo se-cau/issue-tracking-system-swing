@@ -1,3 +1,4 @@
+import its.model.LoginResponse;
 import its.model.ProjectResponse;
 import its.network.NetworkManager;
 
@@ -21,7 +22,7 @@ public class ProjectMainController extends JFrame {
     private JButton logoutButton;
     private JLabel projectTitleLabel;
     private JLabel adminNameLable;
-    private int userId;
+    private LoginResponse userInfo;
     private List<ProjectResponse> projects = new ArrayList<>();
 
     private final String[] tableColumnNames = {"프로젝트 이름", "Contributors"};
@@ -33,11 +34,11 @@ public class ProjectMainController extends JFrame {
         }
     };
 
-    public ProjectMainController(int userId) {
+    public ProjectMainController(LoginResponse loginResponse) {
         setContentPane(ProjectMainPanel);
 
         initSettings();
-        this.userId = userId;
+        this.userInfo = loginResponse;
 
         fetchData();
         initializeComponents();
@@ -55,7 +56,7 @@ public class ProjectMainController extends JFrame {
 
     private void fetchData() {
         try {
-            projects = NetworkManager.getProjectsByUserId(userId);
+            projects = NetworkManager.getProjectsByUserId(userInfo.getUserId());
         } catch (Exception e) {
             //TODO fetch 못한 경우 오류 처리
             e.printStackTrace();
@@ -160,6 +161,6 @@ public class ProjectMainController extends JFrame {
 
 
     public static void main(String[] args) {
-        new ProjectMainController(2);
+        new ProjectMainController(new LoginResponse(24, "msl3", "Admin"));
     }
 }
