@@ -22,6 +22,7 @@ public class ProjectMainController extends JFrame {
     private JButton logoutButton;
     private JLabel projectTitleLabel;
     private JLabel adminNameLable;
+    private JLabel userNameLabel;
     private LoginResponse userInfo;
     private List<ProjectResponse> projects = new ArrayList<>();
 
@@ -65,6 +66,8 @@ public class ProjectMainController extends JFrame {
 
     private void initializeComponents() {
         configureTitleLabel();
+        userNameLabel.setText(userInfo.getUsername());
+
         setDataProjectTable();
         projectTable.setModel(model);
         projectTable.getSelectionModel().addListSelectionListener(tableListSelectionListioner);
@@ -73,6 +76,12 @@ public class ProjectMainController extends JFrame {
 
         logoutButton.addActionListener(logoutButtonListener);
         fetchProjectsButton.addActionListener(fetchProjectsButtonListener);
+
+        if (!userInfo.getRole().equals("Admin")) {
+            createNewProjectButton.setVisible(false);
+        } else {
+            createNewProjectButton.addActionListener(creatNewProjectButtonListener);
+        }
     }
 
     private void setDataProjectTable() {
@@ -92,6 +101,8 @@ public class ProjectMainController extends JFrame {
     ActionListener creatNewProjectButtonListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
+            new ProjectCreateController(userInfo);
+            dispose();
         }
     };
 
@@ -158,7 +169,6 @@ public class ProjectMainController extends JFrame {
             contributorList.setModel(new DefaultListModel());
         }
     }
-
 
     public static void main(String[] args) {
         new ProjectMainController(new LoginResponse(24, "msl3", "Admin"));
