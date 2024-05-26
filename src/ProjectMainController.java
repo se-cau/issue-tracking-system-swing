@@ -11,9 +11,13 @@ import java.util.List;
 public class ProjectMainController extends JFrame {
 
     private JTable projectTable;
-    private JButton creatNewProjectButton;
     private JPanel ProjectMainPanel;
     private JLabel titleLabel;
+    private JButton createNewProjectButton;
+    private JButton fetchProjectsButton;
+    private JButton moveToSelectedProjectButton;
+    private JList contributorList;
+    private JButton logoutButton;
     private int userId;
     private List<ProjectResponse> projects = new ArrayList<>();
 
@@ -53,7 +57,14 @@ public class ProjectMainController extends JFrame {
             contents[index] = project.getProjectContent();
             index++;
         }
-        DefaultTableModel model = new DefaultTableModel(contents, columnNames);
+
+        createNewProjectButton.setVisible(false);
+        DefaultTableModel model = new DefaultTableModel(contents, columnNames){
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
         projectTable.setModel(model);
     }
 
