@@ -2,6 +2,7 @@ import its.model.ProjectResponse;
 import its.network.NetworkManager;
 
 import javax.swing.*;
+import javax.swing.event.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,24 +19,28 @@ public class ProjectMainController extends JFrame {
     private JButton moveToSelectedProjectButton;
     private JList contributorList;
     private JButton logoutButton;
+    private JLabel projectTitleLabel;
+    private JLabel adminNameLable;
     private int userId;
     private List<ProjectResponse> projects = new ArrayList<>();
 
     public ProjectMainController(int userId) {
         setContentPane(ProjectMainPanel);
-        setTitle("Issue Tracking System");
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(1000, 700);
-        setResizable(false);
-        setLocationRelativeTo(null);
-
+        initSettings();
         this.userId = userId;
 
         fetchData();
         initializeComponents();
 
         setVisible(true);
+    }
 
+    private void initSettings() {
+        setTitle("Issue Tracking System");
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setSize(1000, 700);
+        setResizable(false);
+        setLocationRelativeTo(null);
     }
 
     private void fetchData() {
@@ -57,8 +62,6 @@ public class ProjectMainController extends JFrame {
             contents[index] = project.getProjectContent();
             index++;
         }
-
-//        createNewProjectButton.setVisible(false);
         DefaultTableModel model = new DefaultTableModel(contents, columnNames){
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -66,6 +69,9 @@ public class ProjectMainController extends JFrame {
             }
         };
         projectTable.setModel(model);
+        projectTable.getSelectionModel().addListSelectionListener(tableListSelectionListioner);
+
+        moveToSelectedProjectButton.addActionListener(moveToSelectedProjectButtonListener);
     }
 
     private void configureTitleLabel() {
@@ -77,6 +83,51 @@ public class ProjectMainController extends JFrame {
         public void actionPerformed(ActionEvent e) {
         }
     };
+
+    ActionListener moveToSelectedProjectButtonListener = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            int selectedIndex = projectTable.getSelectedRow();
+            if (selectedIndex != -1) {
+                ProjectResponse selectedProject = projects.get(selectedIndex);
+                new IssueMainController(selectedProject.getProjectId());
+                dispose();
+            } else {
+                JOptionPane.showMessageDialog(null, "Project를 선택하세요");
+                return;
+            }
+        }
+    };
+
+    ListSelectionListener tableListSelectionListioner = new ListSelectionListener() {
+        @Override
+        public void valueChanged(ListSelectionEvent e) {
+            if (e.getValueIsAdjusting()) return;
+
+            updateSelectedProjectLabels();
+        }
+    };
+
+    private void updateSelectedProjectLabels() {
+
+        int selectedIndex = projectTable.getSelectedRow();
+
+        if (selectedIndex != -1) {
+            ProjectResponse selectedProject = projects.get(selectedIndex);
+            projectTitleLabel.setText(selectedProject.getTitle());
+            adminNameLable.setText(selectedProject.getAdminName());
+
+            DefaultListModel<String> listModel = new DefaultListModel<>();
+            for (String item : selectedProject.getContributorNames()) {
+                listModel.addElement(item);
+            }
+            contributorList.setModel(listModel);
+
+        } else {
+            projectTitleLabel.setText("");
+        }
+    }
+
 
     public static void main(String[] args) {
         new ProjectMainController(2);
