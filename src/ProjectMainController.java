@@ -58,7 +58,7 @@ public class ProjectMainController extends JFrame {
             index++;
         }
 
-        createNewProjectButton.setVisible(false);
+//        createNewProjectButton.setVisible(false);
         DefaultTableModel model = new DefaultTableModel(contents, columnNames){
             @Override
             public boolean isCellEditable(int row, int column) {
