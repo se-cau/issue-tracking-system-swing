@@ -129,7 +129,7 @@ public class ProjectMainController extends JFrame {
             int selectedIndex = projectTable.getSelectedRow();
             if (selectedIndex != -1) {
                 ProjectResponse selectedProject = projects.get(selectedIndex);
-                new IssueMainController(selectedProject.getProjectId());
+                new IssueMainController(userInfo, selectedProject);
                 dispose();
             } else {
                 JOptionPane.showMessageDialog(null, "Project를 선택하세요");

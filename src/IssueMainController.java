@@ -1,3 +1,8 @@
+import its.model.LoginResponse;
+import its.model.ProjectRequest;
+import its.model.ProjectResponse;
+import its.model.UserResponse;
+
 import javax.swing.*;
 
 public class IssueMainController extends JFrame {
@@ -5,10 +10,16 @@ public class IssueMainController extends JFrame {
     private JLabel testLabel;
     private JPanel IssueMainPanel;
 
-    public IssueMainController(int projectId) {
+    private LoginResponse userInfo;
+    private ProjectResponse projectInfo;
+
+    public IssueMainController(LoginResponse userInfo, ProjectResponse projectInfo) {
         setContentPane(IssueMainPanel);
         initSettings();
-        testLabel.setText(""+projectId);
+
+        this.userInfo = userInfo;
+        this.projectInfo = projectInfo;
+
         setVisible(true);
     }
     private void initSettings() {
