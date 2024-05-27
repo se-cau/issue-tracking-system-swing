@@ -84,6 +84,8 @@ public class ProjectCreateController extends JFrame {
         contributorsTable.setModel(model);
 
         createProjectButton.addActionListener(createProjectButtonListener);
+        goBackToProjectButton.addActionListener(goBackToProjectButtonListener);
+
     }
 
     private void configureTitleLabel() {
@@ -145,6 +147,14 @@ public class ProjectCreateController extends JFrame {
                 JOptionPane.showMessageDialog(null, ex.getMessage());
             }
 
+        }
+    };
+
+    ActionListener goBackToProjectButtonListener = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            new ProjectMainController(userInfo);
+            dispose();
         }
     };
 
