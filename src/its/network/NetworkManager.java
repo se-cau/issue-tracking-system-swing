@@ -125,32 +125,7 @@ public class NetworkManager {
 
     //Project - Post
     public static void createProject(ProjectRequest project) throws Exception {
-        URL url = new URL(SECRET.PROJECTS_URL);
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        connection.setRequestMethod("POST");
-        connection.setRequestProperty("Content-Type", "application/json");
-        connection.setDoOutput(true);
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        String jsonInputString = objectMapper.writeValueAsString(project);
-        try (OutputStream os = connection.getOutputStream()) {
-            byte[] input = jsonInputString.getBytes("utf-8");
-            os.write(input, 0, input.length);
-        }
-
-        int responseCode = connection.getResponseCode();
-        if (responseCode == HttpURLConnection.HTTP_OK) {
-            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream(), "utf-8"));
-            String inputLine;
-            StringBuilder response = new StringBuilder();
-            while ((inputLine = in.readLine()) != null) {
-                response.append(inputLine);
-            }
-            in.close();
-
-        } else {
-            throw new RuntimeException("Failed : HTTP error code : " + responseCode);
-        }
+        post(SECRET.PROJECTS_URL, project);
     }
     //Project - Get
     public static List<ProjectResponse> getProjectsByUserId(int userId) throws Exception {
