@@ -251,7 +251,7 @@
             <properties/>
             <border type="none"/>
             <children>
-              <component id="42dd2" class="javax.swing.JTextArea" binding="textArea1" default-binding="true">
+              <component id="42dd2" class="javax.swing.JTextArea" binding="descriptionTextArea">
                 <constraints/>
                 <properties/>
               </component>

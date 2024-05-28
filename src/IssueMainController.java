@@ -4,6 +4,8 @@ import its.model.ProjectResponse;
 import its.network.NetworkManager;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -23,7 +25,7 @@ public class IssueMainController extends JFrame {
     private JLabel issueTitleLabel;
     private JLabel reporterNameLabel;
     private JLabel reportedDateLabel;
-    private JTextArea textArea1;
+    private JTextArea descriptionTextArea;
     private JLabel titleLabel;
     private JLabel userNameLabel;
     private LoginResponse userInfo;
@@ -74,10 +76,13 @@ public class IssueMainController extends JFrame {
         configureTitleLabel();
         setDataIssuesTable();
         issuesTable.setModel(model);
+        descriptionTextArea.setEditable(false);
 
         logoutButton.addActionListener(logoutButtonListener);
         goBackButton.addActionListener(goBackButtonListener);
         fetchIssuesButton.addActionListener(fetchIssuesButtonListener);
+        issuesTable.getSelectionModel().addListSelectionListener(issueTableSelectionListioner);
+
     }
 
     private void configureTitleLabel() {
@@ -124,6 +129,31 @@ public class IssueMainController extends JFrame {
             setDataIssuesTable();
         }
     };
+
+    ListSelectionListener issueTableSelectionListioner = new ListSelectionListener() {
+        @Override
+        public void valueChanged(ListSelectionEvent e) {
+            if (e.getValueIsAdjusting())
+                return;
+            updateSelectedIssueLabels();
+        }
+    };
+    private void updateSelectedIssueLabels() {
+        int selectedIndex = issuesTable.getSelectedRow();
+        if (selectedIndex != -1) {
+            IssueResponse selectedIssue = issues.get(selectedIndex);
+            issueTitleLabel.setText(selectedIssue.getTitle());
+            reporterNameLabel.setText(selectedIssue.getReporter());
+            reportedDateLabel.setText(selectedIssue.getCreated_at());
+            descriptionTextArea.setText(selectedIssue.getDescription());
+        } else {
+            issueTitleLabel.setText("-");
+            reporterNameLabel.setText("-");
+            reportedDateLabel.setText("-");
+            descriptionTextArea.setText("-");
+        }
+    }
+
 
     public static void main(String[] args) {
         List<String> Object2 = new ArrayList<>();
