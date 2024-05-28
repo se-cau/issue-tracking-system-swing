@@ -5,6 +5,8 @@ import its.network.NetworkManager;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +25,7 @@ public class IssueMainController extends JFrame {
     private JLabel reportedDateLabel;
     private JTextArea textArea1;
     private JLabel titleLabel;
+    private JLabel userNameLabel;
     private LoginResponse userInfo;
     private ProjectResponse projectInfo;
 
@@ -71,12 +74,16 @@ public class IssueMainController extends JFrame {
         configureTitleLabel();
         setDataIssuesTable();
         issuesTable.setModel(model);
+
+        logoutButton.addActionListener(logoutButtonListener);
+        goBackButton.addActionListener(goBackButtonListener);
     }
 
     private void configureTitleLabel() {
         titleLabel.setFont(titleLabel.getFont().deriveFont(titleLabel.getFont().getSize() * 2.0f));
         projectTitleLabel.setText(projectInfo.getTitle());
         projectTitleLabel.setFont(projectTitleLabel.getFont().deriveFont(projectTitleLabel.getFont().getSize() * 2.0f));
+        userNameLabel.setText(userInfo.getUsername());
     }
 
     private void setDataIssuesTable() {
@@ -91,6 +98,22 @@ public class IssueMainController extends JFrame {
             index++;
         }
     }
+
+    ActionListener logoutButtonListener = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            new LoginController();
+            dispose();
+        }
+    };
+
+    ActionListener goBackButtonListener = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            new ProjectMainController(userInfo);
+            dispose();
+        }
+    };
 
     public static void main(String[] args) {
         List<String> Object2 = new ArrayList<>();
