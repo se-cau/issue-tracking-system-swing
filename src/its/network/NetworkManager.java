@@ -198,6 +198,30 @@ public class NetworkManager {
         }
     }
 
+    //Issue Post
+    public static List<IssueResponse> createIssuesByProjectId(IssueRequest issueRequest, int projectId) throws Exception {
+        post(SECRET.ISSUES_URL + "?projectId=" + projectId, issueRequest, List.class);
+        URL url = new URL(SECRET.ISSUES_URL + "?projectId=" + projectId);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("GET");
+        connection.setRequestProperty("Content-Type", "application/json");
+
+        int responseCode = connection.getResponseCode();
+        if (responseCode == HttpURLConnection.HTTP_OK) { // 200
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String inputLine;
+            StringBuilder response = new StringBuilder();
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
+            in.close();
+            ObjectMapper objectMapper = new ObjectMapper();
+            return objectMapper.readValue(response.toString(), new TypeReference<List<IssueResponse>>() {});
+        } else {
+            throw new RuntimeException("Failed : HTTP error code : " + responseCode);
+        }
+    }
+
     public static void main(String[] args) {
         try {
 //            Project Post 테스트 코드
@@ -221,18 +245,33 @@ public class NetworkManager {
 //            System.out.println(a.getUsername());
 
             // Issues Get 테스트 코드
-            int proejctId = 3; // 예시 userId
-            List<IssueResponse> issues = getIssuesByProjectId(proejctId);
+//            int proejctId = 3; // 예시 userId
+//            List<IssueResponse> issues = getIssuesByProjectId(proejctId);
+//            for (IssueResponse issue : issues) {
+//                System.out.println("issue ID: " + issue.getId());
+//                System.out.println("issue status: " + issue.getStatus().toString());
+//                System.out.println("fixer: " + (issue.getFixer() == null));
+//                System.out.println();
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            String a = e.getMessage();
+//            System.out.println(a);
+
+            //postIssuesByProjectId 테스트 코드
+            IssueRequest issueRequest = new IssueRequest("스윙 테스트 이슈 - 1", "테스트 이슈 설명", Priority.MINOR, 4);
+
+            List<IssueResponse> issues = createIssuesByProjectId(issueRequest, 1);
             for (IssueResponse issue : issues) {
                 System.out.println("issue ID: " + issue.getId());
+                System.out.println("issue Title: " + issue.getTitle());
                 System.out.println("issue status: " + issue.getStatus().toString());
-                System.out.println("fixer: " + (issue.getFixer() == null));
+                System.out.println("issue priority: " + (issue.getPriority().toString()));
                 System.out.println();
             }
+
         } catch (Exception e) {
-            e.printStackTrace();
-            String a = e.getMessage();
-            System.out.println(a);
+            throw new RuntimeException(e);
         }
     }
 }
