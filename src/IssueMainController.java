@@ -1,14 +1,22 @@
 import its.model.LoginResponse;
-import its.model.ProjectRequest;
 import its.model.ProjectResponse;
-import its.model.UserResponse;
 
 import javax.swing.*;
 
 public class IssueMainController extends JFrame {
 
-    private JLabel testLabel;
     private JPanel IssueMainPanel;
+    private JButton createNewIssueButton;
+    private JButton fetchIssuesButton;
+    private JLabel projectTitleLabel;
+    private JTable table1;
+    private JButton moveToSelectedIssueButton;
+    private JButton logoutButton;
+    private JButton goBackButton;
+    private JLabel issueTitleLabel;
+    private JLabel reporterNameLabel;
+    private JLabel reportedDateLabel;
+    private JTextArea textArea1;
 
     private LoginResponse userInfo;
     private ProjectResponse projectInfo;
@@ -30,4 +38,7 @@ public class IssueMainController extends JFrame {
         setLocationRelativeTo(null);
     }
 
+    public static void main(String[] args) {
+        new IssueMainController(new LoginResponse(24, "msl3", "Admin"), new ProjectResponse());
+    }
 }
