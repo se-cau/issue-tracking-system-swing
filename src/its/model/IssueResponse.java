@@ -1,32 +1,34 @@
 package its.model;
 
 public class IssueResponse {
+    private int id;
     private String title;
     private String description;
     private String reporter;
     private String assignee;
     private String fixer;
-    private int number;
     private Status status;
     private Priority priority;
-
     private String created_at;
     private String updated_at;
 
-
     public IssueResponse() {}
 
-    public IssueResponse(String title, String description, String reporter, String assignee, String fixer, int number, Status status, Priority priority, String created_at, String updated_at) {
+    public IssueResponse(int id, String title, String description, String reporter, String assignee, String fixer, Status status, Priority priority, String created_at, String updated_at) {
+        this.id = id;
         this.title = title;
         this.description = description;
         this.reporter = reporter;
         this.assignee = assignee;
         this.fixer = fixer;
-        this.number = number;
         this.status = status;
         this.priority = priority;
         this.created_at = created_at;
         this.updated_at = updated_at;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getTitle() {
@@ -47,10 +49,6 @@ public class IssueResponse {
 
     public String getFixer() {
         return fixer;
-    }
-
-    public int getNumber() {
-        return number;
     }
 
     public Status getStatus() {

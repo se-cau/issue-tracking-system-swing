@@ -150,6 +150,31 @@ public class NetworkManager {
         }
     }
 
+    //Issue
+
+    //Issue Get
+    public static List<IssueResponse> getIssuesByProjectId(int projectId) throws Exception {
+        URL url = new URL(SECRET.ISSUES_URL + "?projectId=" + projectId);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("GET");
+        connection.setRequestProperty("Content-Type", "application/json");
+
+        int responseCode = connection.getResponseCode();
+        if (responseCode == HttpURLConnection.HTTP_OK) { // 200
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String inputLine;
+            StringBuilder response = new StringBuilder();
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
+            in.close();
+            ObjectMapper objectMapper = new ObjectMapper();
+            return objectMapper.readValue(response.toString(), new TypeReference<List<IssueResponse>>() {});
+        } else {
+            throw new RuntimeException("Failed : HTTP error code : " + responseCode);
+        }
+    }
+
     public static void main(String[] args) {
         try {
 
@@ -159,20 +184,30 @@ public class NetworkManager {
 
 
              //Project Get 테스트 코드
-            int userId = 2; // 예시 userId
-            List<ProjectResponse> projects = getProjectsByUserId(userId);
-            for (ProjectResponse project : projects) {
-                System.out.println("Project ID: " + project.getProjectId());
-                System.out.println("Title: " + project.getTitle());
-                System.out.println("Admin Name: " + project.getAdminName());
-                System.out.println("Contributors: " + String.join(", ", project.getContributorNames()));
-                System.out.println();
-            }
+//            int userId = 2; // 예시 userId
+//            List<ProjectResponse> projects = getProjectsByUserId(userId);
+//            for (ProjectResponse project : projects) {
+//                System.out.println("Project ID: " + project.getProjectId());
+//                System.out.println("Title: " + project.getTitle());
+//                System.out.println("Admin Name: " + project.getAdminName());
+//                System.out.println("Contributors: " + String.join(", ", project.getContributorNames()));
+//                System.out.println();
+//            }
 
             //User Controller : Register & Login
 //            resister(new RegisterRequest("Minsop test - 102", "1234", "Dev"));
 //            LoginResponse a = login(new LoginRequest("Minsop test - 102", "1234"));
 //            System.out.println(a.getUsername());
+
+            // Issues Get 테스트 코드
+            int proejctId = 3; // 예시 userId
+            List<IssueResponse> issues = getIssuesByProjectId(proejctId);
+            for (IssueResponse issue : issues) {
+                System.out.println("issue ID: " + issue.getId());
+                System.out.println("issue status: " + issue.getStatus().toString());
+                System.out.println("fixer: " + (issue.getFixer() == null));
+                System.out.println();
+            }
         } catch (Exception e) {
             e.printStackTrace();
             String a = e.getMessage();
