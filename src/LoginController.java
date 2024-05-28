@@ -7,7 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class LoginController extends JFrame {
-    private JTextField useridTextField;
+    private JTextField userNameTextField;
     private JTextField passwordTextField;
     private JButton loginButton;
     private JPanel loginPanel;
@@ -38,7 +38,7 @@ public class LoginController extends JFrame {
         public void actionPerformed(ActionEvent e) {
             System.out.println("Loginbutton 클릭");
 
-            String id = useridTextField.getText();
+            String id = userNameTextField.getText();
             String password = passwordTextField.getText();
 
             if (id.isEmpty() || password.isEmpty()) {

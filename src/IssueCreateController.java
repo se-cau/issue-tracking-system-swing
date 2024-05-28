@@ -82,7 +82,7 @@ public class IssueCreateController extends JFrame{
     };
 
     private void clearInputs() {
-        titleLabel.setText("");
+        issueTitleTextField.setText("");
         priorityComboBox.setSelectedIndex(0);
         descriptionTextArea.setText("");
     }
