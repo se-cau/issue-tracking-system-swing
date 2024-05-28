@@ -28,6 +28,8 @@ public class IssueMainController extends JFrame {
     private JTextArea descriptionTextArea;
     private JLabel titleLabel;
     private JLabel userNameLabel;
+    private JComboBox filterStateComboBox;
+    private JButton applyButton;
     private LoginResponse userInfo;
     private ProjectResponse projectInfo;
 
@@ -76,10 +78,14 @@ public class IssueMainController extends JFrame {
         configureTitleLabel();
         setDataIssuesTable();
         issuesTable.setModel(model);
+        issuesTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         descriptionTextArea.setEditable(false);
 
         logoutButton.addActionListener(logoutButtonListener);
         goBackButton.addActionListener(goBackButtonListener);
+        createNewIssueButton.addActionListener(createNewIssueButtonListener);
+        applyButton.addActionListener(applyButtonListener);
+
         fetchIssuesButton.addActionListener(fetchIssuesButtonListener);
         issuesTable.getSelectionModel().addListSelectionListener(issueTableSelectionListioner);
 
@@ -95,6 +101,7 @@ public class IssueMainController extends JFrame {
     private void setDataIssuesTable() {
         model.setColumnIdentifiers(tableColumnNames);
         int index = 0;
+        model.setRowCount(0);
         for (IssueResponse issue : issues) {
             model.addRow(new Object[0]);
             model.setValueAt(issue.getTitle(), index, 0);
@@ -130,6 +137,14 @@ public class IssueMainController extends JFrame {
         }
     };
 
+    ActionListener createNewIssueButtonListener = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            new IssueCreateController(userInfo, projectInfo);
+            dispose();
+        }
+    };
+
     ListSelectionListener issueTableSelectionListioner = new ListSelectionListener() {
         @Override
         public void valueChanged(ListSelectionEvent e) {
@@ -138,13 +153,27 @@ public class IssueMainController extends JFrame {
             updateSelectedIssueLabels();
         }
     };
+    ActionListener applyButtonListener = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String filterState = filterStateComboBox.getSelectedItem().toString();
+            try {
+                issues = NetworkManager.getIssuesByStatus(filterState, projectInfo.getProjectId());
+                setDataIssuesTable();
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, ex.getMessage());
+            }
+
+        }
+    };
+
     private void updateSelectedIssueLabels() {
         int selectedIndex = issuesTable.getSelectedRow();
         if (selectedIndex != -1) {
             IssueResponse selectedIssue = issues.get(selectedIndex);
             issueTitleLabel.setText(selectedIssue.getTitle());
             reporterNameLabel.setText(selectedIssue.getReporter());
-            reportedDateLabel.setText(selectedIssue.getCreated_at());
+            reportedDateLabel.setText(selectedIssue.getCreatedAt());
             descriptionTextArea.setText(selectedIssue.getDescription());
         } else {
             issueTitleLabel.setText("-");
@@ -154,10 +183,9 @@ public class IssueMainController extends JFrame {
         }
     }
 
-
     public static void main(String[] args) {
         List<String> Object2 = new ArrayList<>();
-        new IssueMainController(new LoginResponse(24, "msl3", "Admin"), new ProjectResponse(3, "더미 프로젝트", "adminName", Object2));
+        new IssueMainController(new LoginResponse(6, "민섭 테스트 Dev", "Dev"), new ProjectResponse(1, "민섭 Admin Project 1", "민섭 테스트 Admin", Object2));
 
     }
 }

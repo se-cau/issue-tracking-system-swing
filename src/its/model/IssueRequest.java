@@ -6,7 +6,6 @@ public class IssueRequest {
     private int assigneeid;
     private Status status;
     private int userid;
-
     public IssueRequest() {}
 
     public IssueRequest(String title, String description, int assigneeid, Status status, int userid) {

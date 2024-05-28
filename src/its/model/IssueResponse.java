@@ -9,12 +9,12 @@ public class IssueResponse {
     private String fixer;
     private Status status;
     private Priority priority;
-    private String created_at;
-    private String updated_at;
+    private String createdAt;
+    private String updatedAt;
 
     public IssueResponse() {}
 
-    public IssueResponse(int id, String title, String description, String reporter, String assignee, String fixer, Status status, Priority priority, String created_at, String updated_at) {
+    public IssueResponse(int id, String title, String description, String reporter, String assignee, String fixer, Status status, Priority priority, String createdAt, String updated_at) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -23,8 +23,8 @@ public class IssueResponse {
         this.fixer = fixer;
         this.status = status;
         this.priority = priority;
-        this.created_at = created_at;
-        this.updated_at = updated_at;
+        this.createdAt = createdAt;
+        this.updatedAt = updated_at;
     }
 
     public int getId() {
@@ -59,11 +59,11 @@ public class IssueResponse {
         return priority;
     }
 
-    public String getCreated_at() {
-        return created_at;
+    public String getCreatedAt() {
+        return createdAt;
     }
 
-    public String getUpdated_at() {
-        return updated_at;
+    public String getUpdatedAt() {
+        return updatedAt;
     }
 }

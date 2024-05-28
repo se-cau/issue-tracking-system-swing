@@ -175,10 +175,31 @@ public class NetworkManager {
         }
     }
 
+    // Issue Get by Status
+    public static List<IssueResponse> getIssuesByStatus(String stringStatus, int projectId) throws Exception {
+        URL url = new URL(SECRET.ISSUES_WITH_SLAHSH_URL + stringStatus +"?projectId=" + projectId);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("GET");
+        connection.setRequestProperty("Content-Type", "application/json");
+
+        int responseCode = connection.getResponseCode();
+        if (responseCode == HttpURLConnection.HTTP_OK) { // 200
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String inputLine;
+            StringBuilder response = new StringBuilder();
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
+            in.close();
+            ObjectMapper objectMapper = new ObjectMapper();
+            return objectMapper.readValue(response.toString(), new TypeReference<List<IssueResponse>>() {});
+        } else {
+            throw new RuntimeException("Failed : HTTP error code : " + responseCode);
+        }
+    }
+
     public static void main(String[] args) {
         try {
-
-
 //            Project Post 테스트 코드
 //             createProject(new ProjectRequest("a minsop -created - swing5", 2, Arrays.asList(1, 3)));
 

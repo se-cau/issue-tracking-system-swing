@@ -90,7 +90,7 @@
             <item value="Select your Role"/>
             <item value="Admin"/>
             <item value="Dev"/>
-            <item value="Pl"/>
+            <item value="PL"/>
             <item value="Tester"/>
           </model>
         </properties>
