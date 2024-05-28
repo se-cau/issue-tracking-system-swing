@@ -83,11 +83,16 @@ public class IssueMainController extends JFrame {
 
         logoutButton.addActionListener(logoutButtonListener);
         goBackButton.addActionListener(goBackButtonListener);
-        createNewIssueButton.addActionListener(createNewIssueButtonListener);
         applyButton.addActionListener(applyButtonListener);
 
         fetchIssuesButton.addActionListener(fetchIssuesButtonListener);
         issuesTable.getSelectionModel().addListSelectionListener(issueTableSelectionListioner);
+
+        if (!userInfo.getRole().equals("Tester")) {
+            createNewIssueButton.setVisible(false);
+        } else {
+            createNewIssueButton.addActionListener(createNewIssueButtonListener);
+        }
 
     }
 
