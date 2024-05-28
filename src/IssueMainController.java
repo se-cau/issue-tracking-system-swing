@@ -77,6 +77,7 @@ public class IssueMainController extends JFrame {
 
         logoutButton.addActionListener(logoutButtonListener);
         goBackButton.addActionListener(goBackButtonListener);
+        fetchIssuesButton.addActionListener(fetchIssuesButtonListener);
     }
 
     private void configureTitleLabel() {
@@ -112,6 +113,15 @@ public class IssueMainController extends JFrame {
         public void actionPerformed(ActionEvent e) {
             new ProjectMainController(userInfo);
             dispose();
+        }
+    };
+
+    ActionListener fetchIssuesButtonListener = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            issuesTable.clearSelection();
+            fetchData();
+            setDataIssuesTable();
         }
     };
 
