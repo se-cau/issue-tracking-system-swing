@@ -225,7 +225,7 @@ public class NetworkManager {
     //Issue Detail
     // Issue Get by IssueId
     public static IssueResponse getIssueDetailByIssueId(int issuseId) throws Exception {
-        URL url = new URL(SECRET.ISSUE_DETAILS +"?issueId=" + issuseId);
+        URL url = new URL(SECRET.ISSUE_DETAILS_URL +"?issueId=" + issuseId);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("GET");
         connection.setRequestProperty("Content-Type", "application/json");
@@ -241,6 +241,30 @@ public class NetworkManager {
             in.close();
             ObjectMapper objectMapper = new ObjectMapper();
             return objectMapper.readValue(response.toString(), new TypeReference<IssueResponse>() {});
+        } else {
+            throw new RuntimeException("Failed : HTTP error code : " + responseCode);
+        }
+    }
+
+
+    //Comment
+    public static List<CommentResponse> getCommentsByIssueId(int issuseId) throws Exception {
+        URL url = new URL(SECRET.COMMENTS_URL +"?issueId=" + issuseId);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("GET");
+        connection.setRequestProperty("Content-Type", "application/json");
+
+        int responseCode = connection.getResponseCode();
+        if (responseCode == HttpURLConnection.HTTP_OK) { // 200
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String inputLine;
+            StringBuilder response = new StringBuilder();
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
+            in.close();
+            ObjectMapper objectMapper = new ObjectMapper();
+            return objectMapper.readValue(response.toString(), new TypeReference<List<CommentResponse>>() {});
         } else {
             throw new RuntimeException("Failed : HTTP error code : " + responseCode);
         }
@@ -296,9 +320,18 @@ public class NetworkManager {
 //            }
 
             //Issue Get by Issue ID
-            IssueResponse issue = getIssueDetailByIssueId(1);
-            System.out.println(issue.getTitle());
-            System.out.println(issue.getAssignee());
+//            IssueResponse issue = getIssueDetailByIssueId(1);
+//            System.out.println(issue.getTitle());
+//            System.out.println(issue.getAssignee());
+
+            //Comment Get By Issue ID
+            List<CommentResponse> comments = getCommentsByIssueId(1);
+            for (CommentResponse comment : comments){
+                System.out.println(comment.getUsername());
+                System.out.println(comment.getRole());
+                System.out.println(comment.getMessage());
+                System.out.println(comment.getCreatedAt());
+            }
 
         } catch (Exception e) {
             throw new RuntimeException(e);
