@@ -222,6 +222,31 @@ public class NetworkManager {
         }
     }
 
+    //Issue Detail
+    // Issue Get by IssueId
+    public static IssueResponse getIssueDetailByIssueId(int issuseId) throws Exception {
+        URL url = new URL(SECRET.ISSUE_DETAILS +"?issueId=" + issuseId);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("GET");
+        connection.setRequestProperty("Content-Type", "application/json");
+
+        int responseCode = connection.getResponseCode();
+        if (responseCode == HttpURLConnection.HTTP_OK) { // 200
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String inputLine;
+            StringBuilder response = new StringBuilder();
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
+            in.close();
+            ObjectMapper objectMapper = new ObjectMapper();
+            return objectMapper.readValue(response.toString(), new TypeReference<IssueResponse>() {});
+        } else {
+            throw new RuntimeException("Failed : HTTP error code : " + responseCode);
+        }
+    }
+
+
     public static void main(String[] args) {
         try {
 //            Project Post 테스트 코드
@@ -259,16 +284,21 @@ public class NetworkManager {
 //            System.out.println(a);
 
             //postIssuesByProjectId 테스트 코드
-            IssueRequest issueRequest = new IssueRequest("스윙 테스트 이슈 - 1", "테스트 이슈 설명", Priority.MINOR, 4);
+//            IssueRequest issueRequest = new IssueRequest("스윙 테스트 이슈 - 1", "테스트 이슈 설명", Priority.MINOR, 4);
+//
+//            List<IssueResponse> issues = createIssuesByProjectId(issueRequest, 1);
+//            for (IssueResponse issue : issues) {
+//                System.out.println("issue ID: " + issue.getId());
+//                System.out.println("issue Title: " + issue.getTitle());
+//                System.out.println("issue status: " + issue.getStatus().toString());
+//                System.out.println("issue priority: " + (issue.getPriority().toString()));
+//                System.out.println();
+//            }
 
-            List<IssueResponse> issues = createIssuesByProjectId(issueRequest, 1);
-            for (IssueResponse issue : issues) {
-                System.out.println("issue ID: " + issue.getId());
-                System.out.println("issue Title: " + issue.getTitle());
-                System.out.println("issue status: " + issue.getStatus().toString());
-                System.out.println("issue priority: " + (issue.getPriority().toString()));
-                System.out.println();
-            }
+            //Issue Get by Issue ID
+            IssueResponse issue = getIssueDetailByIssueId(1);
+            System.out.println(issue.getTitle());
+            System.out.println(issue.getAssignee());
 
         } catch (Exception e) {
             throw new RuntimeException(e);
