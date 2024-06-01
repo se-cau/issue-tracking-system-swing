@@ -1,6 +1,9 @@
 package its.model;
 
+import its.network.DateFormatter;
+
 import javax.management.relation.Role;
+import java.util.Date;
 
 public class CommentResponse {
 
@@ -31,7 +34,7 @@ public class CommentResponse {
     }
 
     public String getCreatedAt() {
-        return createdAt;
+        return DateFormatter.formatDateString(createdAt);
     }
 
     public int getAuthorId() {

@@ -1,5 +1,7 @@
 package its.model;
 
+import its.network.DateFormatter;
+
 public class IssueResponse {
     private int id;
     private String title;
@@ -60,11 +62,11 @@ public class IssueResponse {
     }
 
     public String getCreatedAt() {
-        return createdAt;
+        return DateFormatter.formatDateString(createdAt);
     }
 
     public String getUpdatedAt() {
-        return updatedAt;
+        return DateFormatter.formatDateString(updatedAt);
     }
 
 }

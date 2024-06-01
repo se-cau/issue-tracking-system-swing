@@ -241,6 +241,7 @@ public class IssueDetailController extends JFrame{
                 setDataCommentsTable();
                 commentTextArea.setText("댓글을 입력하세요");
                 commentTextArea.setForeground(new Color(153, 153, 153));
+                commentMessageTextArea.setText("");
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(null, "댓글 달기를 실패했습니다 : \n" + ex.getMessage());
             }
