@@ -262,31 +262,50 @@ public class IssueDetailController extends JFrame{
             String userRole = userInfo.getRole();
             String assignee = issueInfo.getAssignee();
             String username = userInfo.getUsername();
+            IssueRequest issueRequest = new IssueRequest(issueInfo.getTitle(), issueInfo.getDescription(), 0, issueInfo.getStatus(), issueInfo.getPriority(), userInfo.getUserId());
 
             if (status == Status.ASSIGNED && username.equals(assignee)) {
-
+                try {
+                    issueInfo = NetworkManager.updateIssueStatus(issueInfo.getId(), issueRequest);
+                    setEditStateButton();
+                    setIssueDetailLabels();
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null, "Change to Fixed 실패했습니다 \n 확인후 다시 시도하세요 \n Error: " + ex.getMessage());
+                }
             } else if (status == Status.FIXED && userRole.equals("Tester")) {
-//                editStateButton.setText("Change to Resolved");
-
+                try {
+                    issueInfo = NetworkManager.updateIssueStatus(issueInfo.getId(), issueRequest);
+                    setEditStateButton();
+                    setIssueDetailLabels();
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null, "Change to Resolved 실패했습니다 \n 확인후 다시 시도하세요 \n Error: " + ex.getMessage());
+                }
             } else if (userRole.equals("PL")) {
                 if (status == Status.NEW) {
                     new AssigneeSelectionController(userInfo, projectInfo, issueInfo);
                     dispose();
                 } else if (status == Status.RESOLVED) {
-//                    editStateButton.setText("Close the Issue");
-
+                    try {
+                        issueInfo = NetworkManager.updateIssueStatus(issueInfo.getId(), issueRequest);
+                        setEditStateButton();
+                        setIssueDetailLabels();
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(null, "Close the Issue 실패했습니다 \n 확인후 다시 시도하세요 \n Error: " + ex.getMessage());
+                    }
                 } else if (status == Status.CLOSE) {
-//                    editStateButton.setText("Reopen the Issue");
-
+                    try {
+                        issueInfo = NetworkManager.updateIssueStatus(issueInfo.getId(), issueRequest);
+                        setEditStateButton();
+                        setIssueDetailLabels();
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(null, "Reopen the Issue 실패했습니다 \n 확인후 다시 시도하세요 \n Error: " + ex.getMessage());
+                    }
                 } else {
-                    editStateButton.setVisible(false);
                     return;
                 }
             } else {
-                editStateButton.setVisible(false);
                 return;
             }
-            dispose();
         }
     };
 
