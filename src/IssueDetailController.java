@@ -4,6 +4,8 @@ import its.network.NetworkManager;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.util.ArrayList;
@@ -27,6 +29,7 @@ public class IssueDetailController extends JFrame{
     private JLabel userNameLabel;
     private JTextArea commentTextArea;
 
+    private ProjectResponse projectInfo;
     private LoginResponse userInfo;
     private IssueResponse issueInfo;
     private List<CommentResponse> comments = new ArrayList<CommentResponse>();
@@ -38,9 +41,10 @@ public class IssueDetailController extends JFrame{
         }
     };
 
-    public IssueDetailController(LoginResponse userInfo, IssueResponse issueInfo) {
+    public IssueDetailController(LoginResponse userInfo, ProjectResponse projectInfo, IssueResponse issueInfo) {
         this.userInfo = userInfo;
         this.issueInfo = issueInfo;
+        this.projectInfo = projectInfo;
         commentsTable.setModel(model);
         commentsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         model.setColumnIdentifiers(tableColumnNames);
@@ -77,6 +81,8 @@ public class IssueDetailController extends JFrame{
         setIssueDetailLabels();
         setDataCommentsTable();
 
+        logoutButton.addActionListener(logoutButtonListener);
+        goBackButton.addActionListener(goBackButtonListener);
     }
     private void initSettings() {
         setTitle("Issue Tracking System");
@@ -130,8 +136,26 @@ public class IssueDetailController extends JFrame{
         }
     }
 
+    ActionListener logoutButtonListener = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            new LoginController();
+            dispose();
+        }
+    };
+
+    ActionListener goBackButtonListener = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            new IssueMainController(userInfo, projectInfo);
+            dispose();
+        }
+    };
+
     public static void main(String[] args) {
-        new IssueDetailController(new LoginResponse(6, "민섭 테스트 Dev", "Dev"),
+        new IssueDetailController(
+                new LoginResponse(6, "민섭 테스트 Dev", "Dev"),
+                new ProjectResponse(1, "민섭 Admin Project 1", "민섭 테스트 Admin", new ArrayList<>()),
                 new IssueResponse(1, "이슈 첫번째", "첫번째 이유입니다", "민섭 테스트 Tester", null, null, Status.NEW, Priority.BLOCKER, "2024-05-28T12:30:03.34454", null));
     }
 }
