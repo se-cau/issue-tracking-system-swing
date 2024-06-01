@@ -13,4 +13,16 @@ public class ProjectRequest {
         this.adminId = adminId;
         this.contributorIds = contributorIds;
     }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public int getAdminId() {
+        return adminId;
+    }
+
+    public List<Integer> getContributorIds() {
+        return contributorIds;
+    }
 }

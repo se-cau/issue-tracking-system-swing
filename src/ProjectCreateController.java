@@ -104,9 +104,9 @@ public class ProjectCreateController extends JFrame {
         }
     }
 
-    private List<Integer> getSelectedContributorIds() {
+    private ArrayList<Integer> getSelectedContributorIds() {
 
-        List<Integer> contributorIds = new ArrayList<Integer>();
+        ArrayList<Integer> contributorIds = new ArrayList<Integer>();
         for(int i=0;i<contributorsTable.getRowCount();i++)
         {
             Boolean selected = Boolean.valueOf(contributorsTable.getValueAt(i, 0).toString());
@@ -130,7 +130,7 @@ public class ProjectCreateController extends JFrame {
         public void actionPerformed(ActionEvent e) {
             String title = titleTextField.getText();
             int adminId = userInfo.getUserId();
-            List<Integer> contributorIds = getSelectedContributorIds();
+            ArrayList<Integer> contributorIds = getSelectedContributorIds();
 
             if (title == null || title.trim().isEmpty() || contributorIds.isEmpty()) {
                 JOptionPane.showMessageDialog(null, "프로젝트 이름과 Contributor를 올바르게 선택하십시오");
@@ -159,7 +159,7 @@ public class ProjectCreateController extends JFrame {
     };
 
     public static void main(String[] args) {
-        new ProjectCreateController(new LoginResponse(24, "msl3", "Admin"));
+        new ProjectCreateController(new LoginResponse(3, "msl3", "Admin"));
     }
 
 }
