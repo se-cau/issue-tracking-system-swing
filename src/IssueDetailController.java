@@ -151,7 +151,7 @@ public class IssueDetailController extends JFrame{
             if (status == Status.NEW) {
                 editStateButton.setText("Assignee 배정하기");
 
-            } else if (status == Status.RESOLVED) {
+            } else if (status == Status.RESOLVED || status == Status.REOPENED) {
                 editStateButton.setText("Close the Issue");
 
             } else if (status == Status.CLOSE) {
@@ -286,7 +286,7 @@ public class IssueDetailController extends JFrame{
                 if (status == Status.NEW) {
                     new AssigneeSelectionController(userInfo, projectInfo, issueInfo);
                     dispose();
-                } else if (status == Status.RESOLVED) {
+                } else if (status == Status.RESOLVED || status == Status.REOPENED) {
                     try {
                         issueInfo = NetworkManager.updateIssueStatus(issueInfo.getId(), issueRequest);
                         setEditStateButton();
