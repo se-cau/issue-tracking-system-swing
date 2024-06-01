@@ -174,6 +174,6 @@ public class ProjectMainController extends JFrame {
     }
 
     public static void main(String[] args) {
-        new ProjectMainController(new LoginResponse(3, "민섭 테스트 어드민", "Admin"));
+        new ProjectMainController(new LoginResponse(12, "pl01", "PL"));
     }
 }

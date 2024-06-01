@@ -87,6 +87,7 @@ public class IssueMainController extends JFrame {
 
         fetchIssuesButton.addActionListener(fetchIssuesButtonListener);
         issuesTable.getSelectionModel().addListSelectionListener(issueTableSelectionListioner);
+        moveToSelectedIssueButton.addActionListener(moveToSelectedIssueButtonListener);
 
         if (!userInfo.getRole().equals("Tester")) {
             createNewIssueButton.setVisible(false);
@@ -171,6 +172,21 @@ public class IssueMainController extends JFrame {
 
         }
     };
+
+    ActionListener moveToSelectedIssueButtonListener = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+            int selectedIndex = issuesTable.getSelectedRow();
+            if (selectedIndex != -1) {
+                IssueResponse selectedIssue = issues.get(selectedIndex);
+                new IssueDetailController(userInfo, projectInfo, selectedIssue);
+            } else {
+                JOptionPane.showMessageDialog(null, "이슈를 선택하세요.");
+            }
+        }
+    };
+
 
     private void updateSelectedIssueLabels() {
         int selectedIndex = issuesTable.getSelectedRow();
