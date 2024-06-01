@@ -129,6 +129,9 @@ public class ProjectMainController extends JFrame {
             int selectedIndex = projectTable.getSelectedRow();
             if (selectedIndex != -1) {
                 ProjectResponse selectedProject = projects.get(selectedIndex);
+                System.out.println(selectedProject.getProjectId());
+                System.out.println(selectedProject.getTitle());
+
                 new IssueMainController(userInfo, selectedProject);
                 dispose();
             } else {

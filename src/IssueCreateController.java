@@ -68,7 +68,7 @@ public class IssueCreateController extends JFrame{
                 JOptionPane.showMessageDialog(null, "이슈의 정보를 올바르게 작성하세요");
                 return;
             }
-            IssueRequest issueRequest = new IssueRequest(title, description, priority, userInfo.getUserId());
+            IssueRequest issueRequest = new IssueRequest(title, description, 0, Status.NEW, priority, userInfo.getUserId());
 
             try {
                 NetworkManager.createIssuesByProjectId(issueRequest, projectInfo.getProjectId());

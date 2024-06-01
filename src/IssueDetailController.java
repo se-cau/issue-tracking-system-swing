@@ -83,6 +83,7 @@ public class IssueDetailController extends JFrame{
 
         logoutButton.addActionListener(logoutButtonListener);
         goBackButton.addActionListener(goBackButtonListener);
+        addCommentButton.addActionListener(addCommentButtonListener);
     }
     private void initSettings() {
         setTitle("Issue Tracking System");
@@ -127,6 +128,7 @@ public class IssueDetailController extends JFrame{
 
     private void setDataCommentsTable() {
         int index = 0;
+        model.setRowCount(0);
         for (CommentResponse comment : comments) {
             model.addRow(new Object[0]);
             model.setValueAt(comment.getUsername(), index, 0);
@@ -149,6 +151,30 @@ public class IssueDetailController extends JFrame{
         public void actionPerformed(ActionEvent e) {
             new IssueMainController(userInfo, projectInfo);
             dispose();
+        }
+    };
+
+    ActionListener addCommentButtonListener = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (commentTextArea.getText().trim().isEmpty() || commentTextArea.getText().equals("댓글을 입력하세요")) {
+                JOptionPane.showMessageDialog(null, "댓글을 올바르게 입력하세요");
+                return;
+            }
+
+            String message = commentTextArea.getText();
+            CommentRequest comment = new CommentRequest(message, userInfo.getUserId());
+
+            try {
+                comments = NetworkManager.postComment(comment, issueInfo.getId());
+                setDataCommentsTable();
+                commentTextArea.setText("댓글을 입력하세요");
+                commentTextArea.setForeground(new Color(153, 153, 153));
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, "댓글 달기를 실패했습니다 : \n" + ex.getMessage());
+            }
+
+
         }
     };
 
