@@ -53,9 +53,7 @@ public class IssueDetailController extends JFrame{
         this.userInfo = userInfo;
         this.issueInfo = issueInfo;
         this.projectInfo = projectInfo;
-        model.setColumnIdentifiers(tableColumnNames);
         commentsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        commentsTable.setModel(model);
 
         descriptionTextArea.setEditable(false);
 
@@ -89,7 +87,7 @@ public class IssueDetailController extends JFrame{
         setIssueDetailLabels();
         setDataCommentsTable();
         setEditStateButton();
-
+        deleteButton.setVisible(false);
         editStateButton.addActionListener(editStateButtonListener);
         logoutButton.addActionListener(logoutButtonListener);
         goBackButton.addActionListener(goBackButtonListener);
@@ -182,12 +180,21 @@ public class IssueDetailController extends JFrame{
             model.setValueAt(comment.getMessage(), index, 2);
             index++;
         }
+        commentsTable.setModel(model);
     }
 
     private void updateSelectedCommentLabels() {
         int selectedIndex = commentsTable.getSelectedRow();
         if (selectedIndex != -1) {
             CommentResponse selectedComment = comments.get(selectedIndex);
+            // TODO 삭제 버튼 활성화
+//            System.out.println(selectedComment.getId());
+//            if (userInfo.getUserId() == selectedComment.getAuthorId()) {
+//                deleteButton.setVisible(true);
+//            } else {
+//                deleteButton.setVisible(false);
+//            }
+
             selectedCommentUserNameLabel.setText(selectedComment.getUsername());
             selectedCommentUserRoleLabel.setText(selectedComment.getRole());
             selectedCommentDateLabel.setText(selectedComment.getCreatedAt());
@@ -283,6 +290,23 @@ public class IssueDetailController extends JFrame{
         }
     };
 
+
+    ActionListener deleteButtonListener = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            int selectedIndex = commentsTable.getSelectedRow();
+            if (selectedIndex != -1) {
+                CommentResponse selectedComment = comments.get(selectedIndex);
+                CommentRequest commentRequest = new CommentRequest(selectedComment.getMessage(), userInfo.getUserId());
+                try {
+                    comments = NetworkManager.deleteComment(selectedComment.getId(), commentRequest);
+                    setDataCommentsTable();
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null, "댓글 삭제 실패했습니다 \n 확인후 다시 시도하세요 \n Error: " + ex.getMessage());
+                }
+            }
+        }
+    };
     public static void main(String[] args) {
         new IssueDetailController(
                 new LoginResponse(5, "민섭 테스트 PL", "PL"),

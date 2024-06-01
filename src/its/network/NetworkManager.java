@@ -363,6 +363,7 @@ public class NetworkManager {
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("PATCH");
         connection.setRequestProperty("Content-Type", "application/json");
+        connection.setDoOutput(true);
 
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
@@ -438,6 +439,40 @@ public class NetworkManager {
 //        } else {
 //            throw new RuntimeException("Failed : HTTP error code : " + responseCode);
 //        }
+    }
+
+    //Comment Delete
+    public static List<CommentResponse> deleteComment(int commentId, CommentRequest commentRequest) throws Exception {
+        URL url = new URL(SECRET.COMMENTS_URL + "?commentId=" + commentId);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("DELETE");
+        connection.setRequestProperty("Content-Type", "application/json");
+        connection.setDoOutput(true);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
+        String jsonInputString = objectMapper.writeValueAsString(commentRequest);
+        System.out.println("jsonInputString: " + jsonInputString);
+
+        try (OutputStream os = connection.getOutputStream()) {
+            byte[] input = jsonInputString.getBytes("utf-8");
+            os.write(input, 0, input.length);
+        }
+
+        int responseCode = connection.getResponseCode();
+
+        if (responseCode == HttpURLConnection.HTTP_OK) { // 200
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String inputLine;
+            StringBuilder response = new StringBuilder();
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
+            in.close();
+            return objectMapper.readValue(response.toString(), new TypeReference<List<CommentResponse>>() {});
+        } else {
+            throw new RuntimeException("Failed : HTTP error code : " + responseCode);
+        }
     }
 
     // AssigneeSelection
