@@ -361,13 +361,15 @@ public class NetworkManager {
     public static IssueResponse updateIssueStatus(int issueId, IssueRequest issueRequest) throws Exception {
         URL url = new URL(SECRET.ISSUES_WITH_SLAHSH_URL + "status?issueId=" + issueId);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        connection.setRequestMethod("PATCH");
+        connection.setRequestMethod("POST");
+        connection.setRequestProperty("X-HTTP-Method-Override", "PATCH");
         connection.setRequestProperty("Content-Type", "application/json");
         connection.setDoOutput(true);
 
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
         String jsonInputString = objectMapper.writeValueAsString(issueRequest);
+        System.out.println("url" + url.toString());
         System.out.println("jsonInputString: " + jsonInputString);
 
         try (OutputStream os = connection.getOutputStream()) {
@@ -387,7 +389,22 @@ public class NetworkManager {
             in.close();
             return objectMapper.readValue(response.toString(), new TypeReference<IssueResponse>() {});
         } else {
-            throw new RuntimeException("Failed : HTTP error code : " + responseCode);
+            try (InputStream errorStream = connection.getErrorStream()) {
+                if (errorStream != null) {
+                    BufferedReader errorReader = new BufferedReader(new InputStreamReader(errorStream));
+                    StringBuilder errorResponse = new StringBuilder();
+                    String line;
+                    while ((line = errorReader.readLine()) != null) {
+                        errorResponse.append(line);
+                    }
+
+                    JsonNode errorJson = objectMapper.readTree(errorResponse.toString());
+                    String errorMessage = errorJson.get("message").asText();
+                    throw new Exception("Error: " + errorMessage);
+                } else {
+                    throw new Exception("Error: No error response body available");
+                }
+            }
         }
     }
 
@@ -505,6 +522,30 @@ public class NetworkManager {
         post(SECRET.ISSUES_ASSIGNS_URL + "?issueId=" + issueId, issueRequest);
     }
 
+    public static StatisticsResponse getStatistics(int projectId) throws Exception{
+        URL url = new URL(SECRET.STATISTICS_URL +  projectId);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("GET");
+        connection.setRequestProperty("Content-Type", "application/json");
+
+        int responseCode = connection.getResponseCode();
+        if (responseCode == HttpURLConnection.HTTP_OK) { // 200
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String inputLine;
+            StringBuilder response = new StringBuilder();
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
+            in.close();
+            ObjectMapper objectMapper = new ObjectMapper();
+            return objectMapper.readValue(response.toString(), new TypeReference<StatisticsResponse>() {});
+        } else if (responseCode == 404) {
+            return null;
+        } else {
+            throw new RuntimeException("Failed : HTTP error code : " + responseCode);
+        }
+    }
+
 
 
 
@@ -578,9 +619,14 @@ public class NetworkManager {
 //            }
 
             //Get Candidates
-            UserResponse user = getCandidate(3);
-            System.out.println(user.getUserId());
-            System.out.println(user.getUsername());
+//            UserResponse user = getCandidate(3);
+//            System.out.println(user.getUserId());
+//            System.out.println(user.getUsername());
+
+            //Get Statistics
+//            StatisticsResponse sr = getStatistics(1);
+//            System.out.println(sr.getAssigneeDistribution());
+
 
         } catch (Exception e) {
             throw new RuntimeException(e);

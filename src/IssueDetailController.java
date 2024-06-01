@@ -271,6 +271,7 @@ public class IssueDetailController extends JFrame{
                     setIssueDetailLabels();
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(null, "Change to Fixed 실패했습니다 \n 확인후 다시 시도하세요 \n Error: " + ex.getMessage());
+                    ex.printStackTrace();
                 }
             } else if (status == Status.FIXED && userRole.equals("Tester")) {
                 try {
@@ -279,6 +280,7 @@ public class IssueDetailController extends JFrame{
                     setIssueDetailLabels();
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(null, "Change to Resolved 실패했습니다 \n 확인후 다시 시도하세요 \n Error: " + ex.getMessage());
+                    ex.printStackTrace();
                 }
             } else if (userRole.equals("PL")) {
                 if (status == Status.NEW) {
@@ -291,6 +293,7 @@ public class IssueDetailController extends JFrame{
                         setIssueDetailLabels();
                     } catch (Exception ex) {
                         JOptionPane.showMessageDialog(null, "Close the Issue 실패했습니다 \n 확인후 다시 시도하세요 \n Error: " + ex.getMessage());
+                        ex.printStackTrace();
                     }
                 } else if (status == Status.CLOSE) {
                     try {
@@ -299,6 +302,7 @@ public class IssueDetailController extends JFrame{
                         setIssueDetailLabels();
                     } catch (Exception ex) {
                         JOptionPane.showMessageDialog(null, "Reopen the Issue 실패했습니다 \n 확인후 다시 시도하세요 \n Error: " + ex.getMessage());
+                        ex.printStackTrace();
                     }
                 } else {
                     return;
