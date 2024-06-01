@@ -360,10 +360,10 @@ public class NetworkManager {
     }
 
     // Comment Post
-    public static List<CommentResponse> postComment(CommentRequest comment, int issuseId) throws Exception {
-        return post(SECRET.COMMENTS_URL + "?issueId=" + issuseId, comment, new TypeReference<List<CommentResponse>>() {
+    public static List<CommentResponse> postComment(CommentRequest comment, int issueId) throws Exception {
+        return post(SECRET.COMMENTS_URL + "?issueId=" + issueId, comment, new TypeReference<List<CommentResponse>>() {
         });
-//        URL url = new URL(SECRET.COMMENTS_URL + "?issueId=" + issuseId);
+//        URL url = new URL(SECRET.COMMENTS_URL + "?issueId=" + issueId);
 //        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 //        connection.setRequestMethod("POST");
 //        connection.setRequestProperty("Content-Type", "application/json");
@@ -383,6 +383,58 @@ public class NetworkManager {
 //            throw new RuntimeException("Failed : HTTP error code : " + responseCode);
 //        }
     }
+
+    // AssigneeSelection
+    // Get candidates
+    public static UserResponse getCandidate(int issueId) throws Exception {
+        URL url = new URL(SECRET.ISSUE_CANDIDATE_URL +"?issueId=" + issueId);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("GET");
+        connection.setRequestProperty("Content-Type", "application/json");
+
+        int responseCode = connection.getResponseCode();
+        if (responseCode == HttpURLConnection.HTTP_OK) { // 200
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String inputLine;
+            StringBuilder response = new StringBuilder();
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
+            in.close();
+            ObjectMapper objectMapper = new ObjectMapper();
+            return objectMapper.readValue(response.toString(), new TypeReference<UserResponse>() {});
+        } else {
+            throw new RuntimeException("Failed : HTTP error code : " + responseCode);
+        }
+    }
+
+    public static void applyAssignee(int issueId, IssueRequest issueRequest) throws Exception {
+        post(SECRET.ISSUES_ASSIGNS_URL + "?issueId" + issueId, issueRequest);
+    }
+
+//    public static UserResponse getDevUsers(int projectId) throws Exception {
+//        URL url = new URL(SECRET.ISSUE_CANDIDATE_URL +"?issueId=" + issueId);
+//        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+//        connection.setRequestMethod("GET");
+//        connection.setRequestProperty("Content-Type", "application/json");
+//
+//        int responseCode = connection.getResponseCode();
+//        if (responseCode == HttpURLConnection.HTTP_OK) { // 200
+//            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+//            String inputLine;
+//            StringBuilder response = new StringBuilder();
+//            while ((inputLine = in.readLine()) != null) {
+//                response.append(inputLine);
+//            }
+//            in.close();
+//            ObjectMapper objectMapper = new ObjectMapper();
+//            return objectMapper.readValue(response.toString(), new TypeReference<UserResponse>() {});
+//        } else {
+//            throw new RuntimeException("Failed : HTTP error code : " + responseCode);
+//        }
+//    }
+
+
 
 
     public static void main(String[] args) {
@@ -445,14 +497,19 @@ public class NetworkManager {
 //            }
 
 //            Post Comment
-            CommentRequest commentRequest = new CommentRequest("여기서 단s거", 4);
-            List<CommentResponse> comments = postComment(commentRequest, 1);
-            for (CommentResponse comment : comments){
-                System.out.println(comment.getUsername());
-                System.out.println(comment.getRole());
-                System.out.println(comment.getMessage());
-                System.out.println(comment.getCreatedAt());
-            }
+//            CommentRequest commentRequest = new CommentRequest("여기서 단s거", 4);
+//            List<CommentResponse> comments = postComment(commentRequest, 1);
+//            for (CommentResponse comment : comments){
+//                System.out.println(comment.getUsername());
+//                System.out.println(comment.getRole());
+//                System.out.println(comment.getMessage());
+//                System.out.println(comment.getCreatedAt());
+//            }
+
+            //Get Candidates
+            UserResponse user = getCandidate(3);
+            System.out.println(user.getUserId());
+            System.out.println(user.getUsername());
 
         } catch (Exception e) {
             throw new RuntimeException(e);

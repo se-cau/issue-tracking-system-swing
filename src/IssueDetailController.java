@@ -25,9 +25,11 @@ public class IssueDetailController extends JFrame{
     private JLabel createdDateLabel;
     private JLabel assigneeLabel;
     private JLabel fixerLabel;
-    private JPanel buttonsPanel;
     private JLabel userNameLabel;
     private JTextArea commentTextArea;
+    private JPanel buttonsPanel;
+    private JButton deleteButton;
+    private JButton changeStateButton;
 
     private ProjectResponse projectInfo;
     private LoginResponse userInfo;

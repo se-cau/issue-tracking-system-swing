@@ -66,4 +66,5 @@ public class IssueResponse {
     public String getUpdatedAt() {
         return updatedAt;
     }
+
 }
