@@ -51,7 +51,7 @@ public class AssigneeSelectionController extends JFrame{
     private void fetchData() {
         try {
             candidate = NetworkManager.getCandidate(issueInfo.getId());
-//            devUsers 가져오기
+            devUsers = NetworkManager.getDevUsersByProjectId(projectInfo.getProjectId());
         } catch (Exception e) {
             //TODO fetch 못한 경우 오류 처리
             e.printStackTrace();
@@ -64,6 +64,7 @@ public class AssigneeSelectionController extends JFrame{
         setDataLists();
         devUserList.addListSelectionListener(devUserListSelectionListioner);
         applyButton.addActionListener(applyButtonListener);
+        goBackToIssueButton.addActionListener(goBackToIssueButtonListener);
     }
 
     private void setDataLists() {
@@ -102,7 +103,7 @@ public class AssigneeSelectionController extends JFrame{
         public void actionPerformed(ActionEvent e) {
             try {
                 if (selectedUser != null) {
-                    IssueRequest issueRequest = new IssueRequest(issueInfo.getTitle(), issueInfo.getDescription(), 1, issueInfo.getStatus(), issueInfo.getPriority(), userInfo.getUserId());
+                    IssueRequest issueRequest = new IssueRequest(issueInfo.getTitle(), issueInfo.getDescription(), selectedUser.getUserId(), issueInfo.getStatus(), issueInfo.getPriority(), userInfo.getUserId());
                     NetworkManager.applyAssignee(issueInfo.getId(), issueRequest);
                     dispose();
                     new IssueDetailController(userInfo, projectInfo, issueInfo);
@@ -116,12 +117,19 @@ public class AssigneeSelectionController extends JFrame{
         }
     };
 
+    ActionListener goBackToIssueButtonListener = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            new IssueDetailController(userInfo, projectInfo, issueInfo);
+            dispose();
+        }
+    };
+
     public static void main(String[] args) {
         new AssigneeSelectionController(
-                new LoginResponse(6, "민섭 테스트 Dev", "Dev"),
+                new LoginResponse(5, "민섭 테스트 PL", "PL"),
                 new ProjectResponse(1, "민섭 Admin Project 1", "민섭 테스트 Admin", new ArrayList<>()),
-                new IssueResponse(3, "이슈 첫번째", "첫번째 이유입니다", "민섭 테스트 Tester", null, null, Status.NEW, Priority.BLOCKER, "2024-05-28T12:30:03.34454", null));
-
+                new IssueResponse(1, "이슈 첫번째", "첫번째 이유입니다", "민섭 테스트 Tester", null, null, Status.NEW, Priority.BLOCKER, "2024-05-28T12:30:03.34454", null));
     }
 
 }

@@ -3,16 +3,16 @@ package its.model;
 public class IssueRequest {
     private String title;
     private String description;
-    private int assigneeid;
+    private int assigneeId;
     private Status status;
     private Priority priority;
     private int userId;
     public IssueRequest() {}
 
-    public IssueRequest(String title, String description, int assigneeid, Status status, Priority priority, int userId) {
+    public IssueRequest(String title, String description, int assigneeId, Status status, Priority priority, int userId) {
         this.title = title;
         this.description = description;
-        this.assigneeid = assigneeid;
+        this.assigneeId = assigneeId;
         this.status = status;
         this.priority = priority;
         this.userId = userId;

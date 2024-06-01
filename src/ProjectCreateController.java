@@ -67,7 +67,7 @@ public class ProjectCreateController extends JFrame {
 
     private void fetchData() {
         try {
-            users = NetworkManager.getUsers();
+            users = NetworkManager.getContributors();
             for (UserResponse user : users) {
                 System.out.println(user.getUsername());
             }

@@ -106,8 +106,8 @@ public class NetworkManager {
         return post(SECRET.LOGIN_URL, loginRequest, new TypeReference<LoginResponse>(){});
     }
 
-    public static List<UserResponse> getUsers() throws Exception {
-        URL url = new URL(SECRET.USERS_URL);
+    public static List<UserResponse> getContributors() throws Exception {
+        URL url = new URL(SECRET.USERS_CONTRIBUTORS_URL);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("GET");
         connection.setRequestProperty("Content-Type", "application/json");
@@ -184,6 +184,29 @@ public class NetworkManager {
             in.close();
             ObjectMapper objectMapper = new ObjectMapper();
             return objectMapper.readValue(response.toString(), new TypeReference<List<ProjectResponse>>() {});
+        } else {
+            throw new RuntimeException("Failed : HTTP error code : " + responseCode);
+        }
+    }
+
+    // Get Dev User in Project
+    public static List<UserResponse> getDevUsersByProjectId(int projectId) throws Exception {
+        URL url = new URL(SECRET.PROJECTS_URL + "/" + projectId + "/dev");
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("GET");
+        connection.setRequestProperty("Content-Type", "application/json");
+
+        int responseCode = connection.getResponseCode();
+        if (responseCode == HttpURLConnection.HTTP_OK) { // 200
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String inputLine;
+            StringBuilder response = new StringBuilder();
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
+            in.close();
+            ObjectMapper objectMapper = new ObjectMapper();
+            return objectMapper.readValue(response.toString(), new TypeReference<List<UserResponse>>() {});
         } else {
             throw new RuntimeException("Failed : HTTP error code : " + responseCode);
         }
@@ -403,13 +426,15 @@ public class NetworkManager {
             in.close();
             ObjectMapper objectMapper = new ObjectMapper();
             return objectMapper.readValue(response.toString(), new TypeReference<UserResponse>() {});
+        } else if (responseCode == 404) {
+            return null;
         } else {
             throw new RuntimeException("Failed : HTTP error code : " + responseCode);
         }
     }
 
     public static void applyAssignee(int issueId, IssueRequest issueRequest) throws Exception {
-        post(SECRET.ISSUES_ASSIGNS_URL + "?issueId" + issueId, issueRequest);
+        post(SECRET.ISSUES_ASSIGNS_URL + "?issueId=" + issueId, issueRequest);
     }
 
 //    public static UserResponse getDevUsers(int projectId) throws Exception {

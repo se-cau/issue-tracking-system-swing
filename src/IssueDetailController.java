@@ -27,7 +27,11 @@ public class IssueDetailController extends JFrame{
     private JLabel fixerLabel;
     private JLabel userNameLabel;
     private JTextArea commentTextArea;
-    private JPanel buttonsPanel;
+    private JButton editStateButton;
+    private JTextArea commentMessageTextArea;
+    private JLabel selectedCommentUserNameLabel;
+    private JLabel selectedCommentUserRoleLabel;
+    private JLabel selectedCommentDateLabel;
     private JButton deleteButton;
     private JButton changeStateButton;
 
@@ -47,9 +51,10 @@ public class IssueDetailController extends JFrame{
         this.userInfo = userInfo;
         this.issueInfo = issueInfo;
         this.projectInfo = projectInfo;
-        commentsTable.setModel(model);
-        commentsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         model.setColumnIdentifiers(tableColumnNames);
+        commentsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        commentsTable.setModel(model);
+
         descriptionTextArea.setEditable(false);
 
 
@@ -82,7 +87,9 @@ public class IssueDetailController extends JFrame{
         configureTitleLabel();
         setIssueDetailLabels();
         setDataCommentsTable();
+        setEditStateButton();
 
+        editStateButton.addActionListener(editStateButtonListener);
         logoutButton.addActionListener(logoutButtonListener);
         goBackButton.addActionListener(goBackButtonListener);
         addCommentButton.addActionListener(addCommentButtonListener);
@@ -107,6 +114,7 @@ public class IssueDetailController extends JFrame{
 
     private void configureTitleLabel() {
         titleLabel.setFont(titleLabel.getFont().deriveFont(titleLabel.getFont().getSize() * 2.0f));
+        titleLabel.setText(issueInfo.getTitle());
         userNameLabel.setText(userInfo.getUsername());
     }
 
@@ -128,7 +136,41 @@ public class IssueDetailController extends JFrame{
         fixerLabel.setText(fixer);
     }
 
+    private void setEditStateButton() {
+        Status status = issueInfo.getStatus();
+        String userRole = userInfo.getRole();
+        String assignee = issueInfo.getAssignee();
+        String username = userInfo.getUsername();
+
+        if (status == Status.ASSIGNED && username.equals(assignee)) {
+            editStateButton.setText("Change to Fixed");
+        } else if (status == Status.FIXED && userRole.equals("Tester")) {
+            editStateButton.setText("Change to Resolved");
+
+        } else if (userRole.equals("PL")) {
+            if (status == Status.NEW) {
+                editStateButton.setText("Assignee 배정하기");
+
+            } else if (status == Status.RESOLVED) {
+                editStateButton.setText("Close the Issue");
+
+            } else if (status == Status.CLOSE) {
+                editStateButton.setText("Reopen the Issue");
+
+            } else {
+                editStateButton.setVisible(false);
+                return;
+            }
+        } else {
+            editStateButton.setVisible(false);
+            return;
+        }
+
+        editStateButton.setVisible(true);
+    }
+
     private void setDataCommentsTable() {
+        model.setColumnIdentifiers(tableColumnNames);
         int index = 0;
         model.setRowCount(0);
         for (CommentResponse comment : comments) {
@@ -175,14 +217,47 @@ public class IssueDetailController extends JFrame{
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(null, "댓글 달기를 실패했습니다 : \n" + ex.getMessage());
             }
+        }
+    };
 
+    ActionListener editStateButtonListener = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            Status status = issueInfo.getStatus();
+            String userRole = userInfo.getRole();
+            String assignee = issueInfo.getAssignee();
+            String username = userInfo.getUsername();
 
+            if (status == Status.ASSIGNED && username.equals(assignee)) {
+
+            } else if (status == Status.FIXED && userRole.equals("Tester")) {
+//                editStateButton.setText("Change to Resolved");
+
+            } else if (userRole.equals("PL")) {
+                if (status == Status.NEW) {
+                    new AssigneeSelectionController(userInfo, projectInfo, issueInfo);
+                    dispose();
+                } else if (status == Status.RESOLVED) {
+//                    editStateButton.setText("Close the Issue");
+
+                } else if (status == Status.CLOSE) {
+//                    editStateButton.setText("Reopen the Issue");
+
+                } else {
+                    editStateButton.setVisible(false);
+                    return;
+                }
+            } else {
+                editStateButton.setVisible(false);
+                return;
+            }
+            dispose();
         }
     };
 
     public static void main(String[] args) {
         new IssueDetailController(
-                new LoginResponse(6, "민섭 테스트 Dev", "Dev"),
+                new LoginResponse(5, "민섭 테스트 PL", "PL"),
                 new ProjectResponse(1, "민섭 Admin Project 1", "민섭 테스트 Admin", new ArrayList<>()),
                 new IssueResponse(1, "이슈 첫번째", "첫번째 이유입니다", "민섭 테스트 Tester", null, null, Status.NEW, Priority.BLOCKER, "2024-05-28T12:30:03.34454", null));
     }
