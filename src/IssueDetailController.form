@@ -437,7 +437,7 @@
                       <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties>
-                      <text value="dateLabel"/>
+                      <text value="-"/>
                     </properties>
                   </component>
                   <component id="86350" class="javax.swing.JLabel">
@@ -450,7 +450,7 @@
                   </component>
                   <scrollpane id="534c9">
                     <constraints>
-                      <grid row="8" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false">
+                      <grid row="8" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="0" anchor="0" fill="3" indent="0" use-parent-layout="false">
                         <minimum-size width="200" height="-1"/>
                         <preferred-size width="200" height="-1"/>
                         <maximum-size width="200" height="-1"/>

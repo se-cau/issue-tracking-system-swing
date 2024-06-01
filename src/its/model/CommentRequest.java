@@ -2,12 +2,12 @@ package its.model;
 
 public class CommentRequest {
     private String message;
-    private int authorId;
+    private int userId;
 
     public CommentRequest() {}
 
-    public CommentRequest(String message, int authorId) {
+    public CommentRequest(String message, int userId) {
         this.message = message;
-        this.authorId = authorId;
+        this.userId = userId;
     }
 }

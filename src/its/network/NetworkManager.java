@@ -357,6 +357,39 @@ public class NetworkManager {
         }
     }
 
+    // Issue update Status
+    public static IssueResponse updateIssueStatus(int issueId, IssueRequest issueRequest) throws Exception {
+        URL url = new URL(SECRET.ISSUES_WITH_SLAHSH_URL + "status?issueId=" + issueId);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("PATCH");
+        connection.setRequestProperty("Content-Type", "application/json");
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
+        String jsonInputString = objectMapper.writeValueAsString(issueRequest);
+        System.out.println("jsonInputString: " + jsonInputString);
+
+        try (OutputStream os = connection.getOutputStream()) {
+            byte[] input = jsonInputString.getBytes("utf-8");
+            os.write(input, 0, input.length);
+        }
+
+        int responseCode = connection.getResponseCode();
+
+        if (responseCode == HttpURLConnection.HTTP_OK) { // 200
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String inputLine;
+            StringBuilder response = new StringBuilder();
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
+            in.close();
+            return objectMapper.readValue(response.toString(), new TypeReference<IssueResponse>() {});
+        } else {
+            throw new RuntimeException("Failed : HTTP error code : " + responseCode);
+        }
+    }
+
 
     //Comment
     // Comment Get
@@ -436,28 +469,6 @@ public class NetworkManager {
     public static void applyAssignee(int issueId, IssueRequest issueRequest) throws Exception {
         post(SECRET.ISSUES_ASSIGNS_URL + "?issueId=" + issueId, issueRequest);
     }
-
-//    public static UserResponse getDevUsers(int projectId) throws Exception {
-//        URL url = new URL(SECRET.ISSUE_CANDIDATE_URL +"?issueId=" + issueId);
-//        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-//        connection.setRequestMethod("GET");
-//        connection.setRequestProperty("Content-Type", "application/json");
-//
-//        int responseCode = connection.getResponseCode();
-//        if (responseCode == HttpURLConnection.HTTP_OK) { // 200
-//            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-//            String inputLine;
-//            StringBuilder response = new StringBuilder();
-//            while ((inputLine = in.readLine()) != null) {
-//                response.append(inputLine);
-//            }
-//            in.close();
-//            ObjectMapper objectMapper = new ObjectMapper();
-//            return objectMapper.readValue(response.toString(), new TypeReference<UserResponse>() {});
-//        } else {
-//            throw new RuntimeException("Failed : HTTP error code : " + responseCode);
-//        }
-//    }
 
 
 

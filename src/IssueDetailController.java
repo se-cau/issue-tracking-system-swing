@@ -2,6 +2,8 @@ import its.model.*;
 import its.network.NetworkManager;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -57,7 +59,6 @@ public class IssueDetailController extends JFrame{
 
         descriptionTextArea.setEditable(false);
 
-
         initSettings();
         fetchData();
         initializeComponents();
@@ -93,6 +94,7 @@ public class IssueDetailController extends JFrame{
         logoutButton.addActionListener(logoutButtonListener);
         goBackButton.addActionListener(goBackButtonListener);
         addCommentButton.addActionListener(addCommentButtonListener);
+        commentsTable.getSelectionModel().addListSelectionListener(commentsTableSelectionListioner);
     }
     private void initSettings() {
         setTitle("Issue Tracking System");
@@ -181,6 +183,31 @@ public class IssueDetailController extends JFrame{
             index++;
         }
     }
+
+    private void updateSelectedCommentLabels() {
+        int selectedIndex = commentsTable.getSelectedRow();
+        if (selectedIndex != -1) {
+            CommentResponse selectedComment = comments.get(selectedIndex);
+            selectedCommentUserNameLabel.setText(selectedComment.getUsername());
+            selectedCommentUserRoleLabel.setText(selectedComment.getRole());
+            selectedCommentDateLabel.setText(selectedComment.getCreatedAt());
+            commentMessageTextArea.setText(selectedComment.getMessage());
+        } else {
+            selectedCommentUserNameLabel.setText("-");
+            selectedCommentUserRoleLabel.setText("-");
+            selectedCommentDateLabel.setText("-");
+            descriptionTextArea.setText("-");
+        }
+    }
+
+    ListSelectionListener commentsTableSelectionListioner = new ListSelectionListener() {
+        @Override
+        public void valueChanged(ListSelectionEvent e) {
+            if (e.getValueIsAdjusting())
+                return;
+            updateSelectedCommentLabels();
+        }
+    };
 
     ActionListener logoutButtonListener = new ActionListener() {
         @Override
