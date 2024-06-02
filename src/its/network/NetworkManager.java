@@ -546,9 +546,6 @@ public class NetworkManager {
         }
     }
 
-
-
-
     public static void main(String[] args) {
         try {
 //            Project Post 테스트 코드

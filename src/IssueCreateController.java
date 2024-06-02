@@ -73,11 +73,11 @@ public class IssueCreateController extends JFrame{
             try {
                 NetworkManager.createIssuesByProjectId(issueRequest, projectInfo.getProjectId());
                 JOptionPane.showMessageDialog(null, "이슈를 성공적으로 생성했습니다.");
+                clearInputs();
             } catch (Exception ex) {
                 ex.printStackTrace();
                 JOptionPane.showMessageDialog(null, ex.getMessage());
             }
-            clearInputs();
         }
     };
 

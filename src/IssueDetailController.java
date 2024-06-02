@@ -35,6 +35,7 @@ public class IssueDetailController extends JFrame{
     private JLabel selectedCommentUserRoleLabel;
     private JLabel selectedCommentDateLabel;
     private JButton deleteButton;
+    private JScrollPane mainScorllPane;
     private JButton changeStateButton;
 
     private ProjectResponse projectInfo;
@@ -79,6 +80,12 @@ public class IssueDetailController extends JFrame{
                     commentTextArea.setText("댓글을 입력하세요");
                     commentTextArea.setForeground(new Color(153, 153, 153));
                 }
+            }
+        });
+
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                mainScorllPane.getVerticalScrollBar().setValue(0);
             }
         });
     }

@@ -212,23 +212,7 @@
                     <constraints/>
                     <properties>
                       <model>
-                        <item value="ㅇㅇ"/>
-                        <item value=""/>
-                        <item value="ㅇ"/>
-                        <item value="ㅇ"/>
-                        <item value="ㅇ"/>
-                        <item value="ㅇ"/>
-                        <item value="ㅇ"/>
-                        <item value="ㅇ"/>
-                        <item value="ㅇ"/>
-                        <item value="ㅇ"/>
-                        <item value="ㅇ"/>
-                        <item value=""/>
-                        <item value="ㅇ"/>
-                        <item value="ㅇ"/>
-                        <item value="ㅇ"/>
-                        <item value="ㅇ"/>
-                        <item value="ㅇ"/>
+                        <item value="-"/>
                       </model>
                     </properties>
                   </component>
@@ -247,7 +231,11 @@
                 <children>
                   <component id="c528b" class="javax.swing.JList" binding="statisticsList2">
                     <constraints/>
-                    <properties/>
+                    <properties>
+                      <model>
+                        <item value="-"/>
+                      </model>
+                    </properties>
                   </component>
                 </children>
               </scrollpane>
@@ -264,7 +252,11 @@
                 <children>
                   <component id="ab91b" class="javax.swing.JList" binding="statisticsList3">
                     <constraints/>
-                    <properties/>
+                    <properties>
+                      <model>
+                        <item value="-"/>
+                      </model>
+                    </properties>
                   </component>
                 </children>
               </scrollpane>
@@ -281,7 +273,11 @@
                 <children>
                   <component id="d7ca6" class="javax.swing.JList" binding="statisticsList4">
                     <constraints/>
-                    <properties/>
+                    <properties>
+                      <model>
+                        <item value="-"/>
+                      </model>
+                    </properties>
                   </component>
                 </children>
               </scrollpane>

@@ -1,6 +1,7 @@
 import its.model.IssueResponse;
 import its.model.LoginResponse;
 import its.model.ProjectResponse;
+import its.model.StatisticsResponse;
 import its.network.NetworkManager;
 
 import javax.swing.*;
@@ -11,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class IssueMainController extends JFrame {
 
@@ -36,6 +38,8 @@ public class IssueMainController extends JFrame {
     private JList statisticsList4;
     private LoginResponse userInfo;
     private ProjectResponse projectInfo;
+
+    private StatisticsResponse statisticsInfo;
 
     private List<IssueResponse> issues = new ArrayList<IssueResponse>();
 
@@ -72,15 +76,16 @@ public class IssueMainController extends JFrame {
     private void fetchData() {
         try {
             issues = NetworkManager.getIssuesByProjectId(projectInfo.getProjectId());
+            statisticsInfo = NetworkManager.getStatistics(projectInfo.getProjectId());
         } catch (Exception e) {
-            //TODO fetch 못한 경우 오류 처리
-            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Fetch data 실패 \n확인 후 다시 시도해주세요" + e.getMessage());
         }
     }
 
     private void initializeComponents() {
         configureTitleLabel();
         setDataIssuesTable();
+        setDataStatisticsLists();
         issuesTable.setModel(model);
         issuesTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         descriptionTextArea.setEditable(false);
@@ -122,6 +127,58 @@ public class IssueMainController extends JFrame {
         }
     }
 
+    private void setDataStatisticsLists() {
+
+        Map<String, Integer> statusDistribution = statisticsInfo.getStatusDistribution();
+        Map<String, Integer> reporterDistribution = statisticsInfo.getReporterDistribution();
+        Map<String, Integer> assigneeDistribution = statisticsInfo.getAssigneeDistribution();
+        List<String> topCommentedIssues = statisticsInfo.getTopCommentedIssues();
+
+        DefaultListModel<String> listModel1 = new DefaultListModel<>();
+        if (statusDistribution == null) {
+            listModel1.addElement("-");
+            statisticsList1.setModel(listModel1);
+        } else {
+            for (Map.Entry<String, Integer> entry : statusDistribution.entrySet()) {
+                listModel1.addElement(entry.getKey() + ": " + entry.getValue());
+            }
+            statisticsList1.setModel(listModel1);
+        }
+
+        DefaultListModel<String> listModel2 = new DefaultListModel<>();
+        if (reporterDistribution == null) {
+            listModel2.addElement("-");
+            statisticsList2.setModel(listModel2);
+        } else {
+            for (Map.Entry<String, Integer> entry : reporterDistribution.entrySet()) {
+                listModel2.addElement(entry.getKey() + ": " + entry.getValue());
+            }
+            statisticsList2.setModel(listModel2);
+        }
+
+        DefaultListModel<String> listModel3 = new DefaultListModel<>();
+        if (reporterDistribution == null) {
+            listModel3.addElement("-");
+            statisticsList3.setModel(listModel3);
+        } else {
+            for (Map.Entry<String, Integer> entry : assigneeDistribution.entrySet()) {
+                listModel3.addElement(entry.getKey() + ": " + entry.getValue());
+            }
+            statisticsList3.setModel(listModel3);
+        }
+
+        DefaultListModel<String> listModel4 = new DefaultListModel<>();
+        if (reporterDistribution == null) {
+            listModel4.addElement("-");
+            statisticsList4.setModel(listModel4);
+        } else {
+            for (String issueName: topCommentedIssues) {
+                listModel4.addElement(issueName);
+            }
+            statisticsList4.setModel(listModel4);
+        }
+    }
+
     ActionListener logoutButtonListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -144,6 +201,7 @@ public class IssueMainController extends JFrame {
             issuesTable.clearSelection();
             fetchData();
             setDataIssuesTable();
+            setDataStatisticsLists();
         }
     };
 
