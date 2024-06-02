@@ -30,6 +30,10 @@ public class IssueMainController extends JFrame {
     private JLabel userNameLabel;
     private JComboBox filterStateComboBox;
     private JButton applyButton;
+    private JList statisticsList1;
+    private JList statisticsList2;
+    private JList statisticsList3;
+    private JList statisticsList4;
     private LoginResponse userInfo;
     private ProjectResponse projectInfo;
 

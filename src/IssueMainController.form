@@ -3,7 +3,7 @@
   <grid id="27dc6" binding="IssueMainPanel" layout-manager="GridLayoutManager" row-count="10" column-count="5" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="0" left="0" bottom="0" right="0"/>
     <constraints>
-      <xy x="20" y="20" width="606" height="749"/>
+      <xy x="20" y="20" width="1360" height="749"/>
     </constraints>
     <properties/>
     <border type="none"/>
@@ -124,17 +124,25 @@
           </hspacer>
         </children>
       </grid>
-      <grid id="6caca" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+      <grid id="6caca" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
         <margin top="0" left="0" bottom="0" right="0"/>
         <constraints>
-          <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+          <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="2" hsize-policy="0" anchor="0" fill="0" indent="1" use-parent-layout="false">
+            <minimum-size width="670" height="450"/>
+            <preferred-size width="670" height="470"/>
+            <maximum-size width="670" height="500"/>
+          </grid>
         </constraints>
         <properties/>
         <border type="none"/>
         <children>
           <scrollpane id="defff">
             <constraints>
-              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="5" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="2" hsize-policy="0" anchor="8" fill="2" indent="0" use-parent-layout="false">
+                <minimum-size width="650" height="280"/>
+                <preferred-size width="650" height="280"/>
+                <maximum-size width="650" height="280"/>
+              </grid>
             </constraints>
             <properties/>
             <border type="none"/>
@@ -145,12 +153,150 @@
               </component>
             </children>
           </scrollpane>
+          <grid id="eeafc" layout-manager="GridLayoutManager" row-count="2" column-count="4" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="0" left="0" bottom="0" right="0"/>
+            <constraints>
+              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="2" indent="1" use-parent-layout="false">
+                <minimum-size width="650" height="170"/>
+                <preferred-size width="650" height="170"/>
+                <maximum-size width="650" height="170"/>
+              </grid>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="7c3bf" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="State 별 이슈 수"/>
+                </properties>
+              </component>
+              <component id="c7ddc" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Report 분포"/>
+                </properties>
+              </component>
+              <component id="1992c" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="담당자 배정 분포"/>
+                </properties>
+              </component>
+              <component id="60c29" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="코멘트 많은 이슈"/>
+                </properties>
+              </component>
+              <scrollpane id="cb7a9">
+                <constraints>
+                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="3" indent="0" use-parent-layout="false">
+                    <minimum-size width="145" height="150"/>
+                    <preferred-size width="145" height="150"/>
+                    <maximum-size width="145" height="150"/>
+                  </grid>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="9e723" class="javax.swing.JList" binding="statisticsList1">
+                    <constraints/>
+                    <properties>
+                      <model>
+                        <item value="ㅇㅇ"/>
+                        <item value=""/>
+                        <item value="ㅇ"/>
+                        <item value="ㅇ"/>
+                        <item value="ㅇ"/>
+                        <item value="ㅇ"/>
+                        <item value="ㅇ"/>
+                        <item value="ㅇ"/>
+                        <item value="ㅇ"/>
+                        <item value="ㅇ"/>
+                        <item value="ㅇ"/>
+                        <item value=""/>
+                        <item value="ㅇ"/>
+                        <item value="ㅇ"/>
+                        <item value="ㅇ"/>
+                        <item value="ㅇ"/>
+                        <item value="ㅇ"/>
+                      </model>
+                    </properties>
+                  </component>
+                </children>
+              </scrollpane>
+              <scrollpane id="ae5f1">
+                <constraints>
+                  <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="7" hsize-policy="0" anchor="0" fill="3" indent="0" use-parent-layout="false">
+                    <minimum-size width="145" height="150"/>
+                    <preferred-size width="145" height="150"/>
+                    <maximum-size width="145" height="150"/>
+                  </grid>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="c528b" class="javax.swing.JList" binding="statisticsList2">
+                    <constraints/>
+                    <properties/>
+                  </component>
+                </children>
+              </scrollpane>
+              <scrollpane id="1336b">
+                <constraints>
+                  <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="7" hsize-policy="0" anchor="0" fill="3" indent="0" use-parent-layout="false">
+                    <minimum-size width="145" height="150"/>
+                    <preferred-size width="145" height="150"/>
+                    <maximum-size width="145" height="150"/>
+                  </grid>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="ab91b" class="javax.swing.JList" binding="statisticsList3">
+                    <constraints/>
+                    <properties/>
+                  </component>
+                </children>
+              </scrollpane>
+              <scrollpane id="35ffa">
+                <constraints>
+                  <grid row="1" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="3" indent="0" use-parent-layout="false">
+                    <minimum-size width="145" height="150"/>
+                    <preferred-size width="145" height="150"/>
+                    <maximum-size width="145" height="150"/>
+                  </grid>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="d7ca6" class="javax.swing.JList" binding="statisticsList4">
+                    <constraints/>
+                    <properties/>
+                  </component>
+                </children>
+              </scrollpane>
+            </children>
+          </grid>
         </children>
       </grid>
       <grid id="d4522" layout-manager="GridLayoutManager" row-count="13" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
         <margin top="0" left="0" bottom="0" right="0"/>
         <constraints>
-          <grid row="5" column="3" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+          <grid row="5" column="3" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false">
+            <minimum-size width="-1" height="400"/>
+            <preferred-size width="-1" height="400"/>
+            <maximum-size width="-1" height="400"/>
+          </grid>
         </constraints>
         <properties/>
         <border type="none"/>
