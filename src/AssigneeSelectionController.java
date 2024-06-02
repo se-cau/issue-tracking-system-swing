@@ -53,10 +53,8 @@ public class AssigneeSelectionController extends JFrame{
             candidate = NetworkManager.getCandidate(issueInfo.getId());
             devUsers = NetworkManager.getDevUsersByProjectId(projectInfo.getProjectId());
         } catch (Exception e) {
-            //TODO fetch 못한 경우 오류 처리
-            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Fetch data 실패 \n확인 후 다시 시도해주세요" + e.getMessage());
         }
-
     }
 
     private void initializeComponents() {
