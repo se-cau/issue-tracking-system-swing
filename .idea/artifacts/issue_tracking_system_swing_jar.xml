@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="issue-tracking-system-swing:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/issue_tracking_system_swing_jar</output-path>
+    <root id="archive" name="issue-tracking-system-swing.jar">
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/../../META-INF/MANIFEST.MF" />
+      </element>
+      <element id="module-output" name="issue-tracking-system-swing" />
+      <element id="extracted-dir" path="$USER_HOME$/Downloads/jackson-annotations-2.15.2.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/Downloads/jackson-core-2.15.2.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/Downloads/jackson-databind-2.15.2.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
